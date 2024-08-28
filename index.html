@@ -1,0 +1,500 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dino Runner</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgb(238,172,93);
+            background: radial-gradient(circle, rgba(238,172,93,1) 0%, rgba(252,115,13,1) 100%);
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        #game-container {
+            width: 100%;
+            max-width: 600px;
+            height: 150px;
+            border-bottom: 1px solid #ddd;
+            position: relative;
+            overflow: hidden;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        #dino {
+            width: 40px;
+            height: 43px;
+            position: absolute;
+            bottom: 5px;
+            left: 50px;
+        }
+
+        #cactus {
+            width: 30px;
+            height: 50px;
+            position: absolute;
+            bottom: 0;
+            right: -30px;
+        }
+
+        #score, #high-score, #total-score {
+            font-size: 18px;
+            margin-top: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        #start-button, #dashboard-button {
+            margin-top: 20px;
+            padding: 12px 24px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            background: rgb(238,172,93);
+            background: radial-gradient(circle, rgba(238,172,93,1) 0%, rgba(252,115,13,1) 100%);
+            color: #fff;
+            transition: background-color 0.3s;
+        }
+
+        #start-button:hover, #dashboard-button:hover {
+            background-color: rgb(238,172,93);
+        }
+
+        #dashboard-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            height: 90%;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            padding: 20px;
+            box-sizing: border-box;
+            border-radius: 8px;
+            overflow-y: auto;
+        }
+
+        #dashboard-popup h2 {
+            margin: 0;
+            font-size: 24px;
+            text-align: center;
+            color: #333;
+        }
+
+        #dashboard-popup p {
+            font-size: 18px;
+            text-align: center;
+            color: #666;
+        }
+
+        #dashboard-popup table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        #dashboard-popup th, #dashboard-popup td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            font-size: 16px;
+            color: #333;
+        }
+
+        #dashboard-popup th {
+            background-color: #f8f9fa;
+            color: rgba(238,172,93,1) ;
+        }
+
+        #dashboard-popup td {
+            background-color: #fff;
+        }
+
+        #dashboard-popup tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        #close-popup {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 24px;
+            color: rgba(238,172,93,1) ;
+            background-color: transparent;
+            border: none;
+            transition: color 0.3s;
+        }
+
+        #close-popup:hover {
+            color: rgba(238,172,93,1) ;
+        }
+
+        #overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        #navbar {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background: rgb(238,172,93);
+            background: radial-gradient(circle, rgba(238,172,93,1) 0%, rgba(252,115,13,1) 100%);
+            padding: 15px 0; /* Increased padding for larger height */
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        .nav-item {
+            text-align: center;
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px; /* Increased font size */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .nav-icon {
+            width: 40px; /* Increased icon size */
+            height: 40px; /* Increased icon size */
+            margin-bottom: 5px;
+        }
+
+        .nav-item span {
+            display: block;
+        }
+
+        @media (max-width: 600px) {
+            .nav-icon {
+                width: 30px;
+                height: 30px;
+            }
+
+            .nav-item span {
+                font-size: 12px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Player : John Doe</h1>
+    <div id="game-container">
+        <img id="dino" src="bera.png" alt="Dino">
+        <img id="cactus" src="cactus.png" alt="Cactus">
+    </div>
+    <div id="score">0</div>
+    <div id="total-score">Total: 0</div>
+    <div id="high-score">High Score: 0</div>
+    <button id="start-button">Start Game</button>
+    <button id="dashboard-button">Leader Board</button>
+
+    <!-- Dashboard Popup -->
+    <div id="overlay"></div>
+    <div id="dashboard-popup">
+        <button id="close-popup">&times;</button>
+        <h2>Dashboard</h2>
+        <p>Player: John Doe &emsp; Rank : 1</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Name</th>
+                    <th>Total Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                <script>
+                    const names = ["John", "Paul", "George", "Ringo", "Mick"];
+                    const scores = ["10m", "9.9m", "9.8m", "9.7m", "9.6m"];
+
+                    for (let i = 0; i < 100; i++) {
+                        const name = names[i % names.length];
+                        const score = scores[i % scores.length];
+                        document.write(
+                            `<tr><td>${i + 1}</td><td>${name}</td><td>${score}</td></tr>`
+                        );
+                    }
+                </script>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Bottom Navbar -->
+    <div id="navbar">
+        <a href="#play" class="nav-item" id="nav-play">
+            <img src="play.png" alt="Play" class="nav-icon">
+            <span>Play</span>
+        </a>
+        <a href="#race" class="nav-item" id="nav-race">
+            <img src="race.png" alt="Race" class="nav-icon">
+            <span>Race</span>
+        </a>
+        <a href="#earn" class="nav-item" id="nav-earn">
+            <img src="earn.png" alt="Earn" class="nav-icon">
+            <span>Earn</span>
+        </a>
+        <a href="#invite" class="nav-item" id="nav-friends">
+            <img src="friends.png" alt="Invite" class="nav-icon">
+            <span>Friends</span>
+        </a>
+        <a href="#airdrop" class="nav-item" id="nav-airdrop">
+            <img src="airdrop.png" alt="Airdrop" class="nav-icon">
+            <span>Airdrop</span>
+        </a>
+    </div>
+
+    <script>
+        const dino = document.getElementById('dino');
+        const cactus = document.getElementById('cactus');
+        const scoreDisplay = document.getElementById('score');
+        const highScoreDisplay = document.getElementById('high-score');
+        const totalScoreDisplay = document.getElementById('total-score');
+        const startButton = document.getElementById('start-button');
+        const dashboardButton = document.getElementById('dashboard-button');
+        const dashboardPopup = document.getElementById('dashboard-popup');
+        const overlay = document.getElementById('overlay');
+        const closePopupButton = document.getElementById('close-popup');
+
+        let isJumping = false;
+        let score = 0;
+        let highScore = 0;
+        let totalScore = 0;
+        let gameSpeed = 20;
+        let gameLoop;
+        let isGameRunning = false;
+        let isDescending = false;
+
+        function jump() {
+    if (!isJumping && isGameRunning) {
+        isJumping = true;
+        let jumpHeight = 0;
+        const maxJumpHeight = 100;
+        const jumpSpeed = 4; // Increased jump speed
+
+        const jumpInterval = setInterval(() => {
+            if (jumpHeight < maxJumpHeight && !isDescending) {
+                jumpHeight += jumpSpeed;
+                dino.style.bottom = `${jumpHeight}px`;
+            } else {
+                isDescending = true;
+                jumpHeight -= jumpSpeed;
+                dino.style.bottom = `${jumpHeight}px`;
+
+                if (jumpHeight <= 0) {
+                    clearInterval(jumpInterval);
+                    isJumping = false;
+                    isDescending = false;
+                    dino.style.bottom = '0px';
+                }
+            }
+        }, 15);
+    }
+}
+
+
+        function moveCactus() {
+            let position = 600;
+            cactus.style.left = `${position}px`;
+
+            return setInterval(() => {
+                if (position < -20) {
+                    position = 600;
+                    score++;
+                    totalScore++;
+                    scoreDisplay.textContent = score;
+                    totalScoreDisplay.textContent = `Total: ${totalScore}`;
+                    if (score > highScore) {
+                        highScore = score;
+                        highScoreDisplay.textContent = `High Score: ${highScore}`;
+                    }
+                    gameSpeed = Math.max(5, 20 - Math.floor(score / 100));
+                } else {
+                    position -= 5;
+                }
+                cactus.style.left = `${position}px`;
+
+                checkCollision();
+            }, gameSpeed);
+        }
+
+        function checkCollision() {
+            const dinoRect = dino.getBoundingClientRect();
+            const cactusRect = cactus.getBoundingClientRect();
+
+            if (
+                dinoRect.right > cactusRect.left &&
+                dinoRect.left < cactusRect.right &&
+                dinoRect.bottom > cactusRect.top &&
+                dinoRect.top < cactusRect.bottom
+            ) {
+                endGame();
+            }
+        }
+
+        function switchDinoImage(isRunning) {
+        dino.src = isRunning ? "bera.gif" : "bera.png";
+    }
+
+    function startGame() {
+        if (!isGameRunning) {
+            isGameRunning = true;
+            score = 0;
+            scoreDisplay.textContent = '0';
+            totalScore = 0;
+            totalScoreDisplay.textContent = 'Total: 0';
+            startButton.style.display = 'none';
+            cactus.style.left = '600px';
+            gameLoop = moveCactus();
+            addEventListeners();
+            switchDinoImage(true); // Switch to dino.gif when game starts
+        }
+    }
+
+    function endGame() {
+        isGameRunning = false;
+        clearInterval(gameLoop);
+        showGameOverPopup();
+        startButton.style.display = 'block';
+        removeEventListeners();
+        switchDinoImage(false); // Switch back to dino.png when game ends
+    }
+
+        function showGameOverPopup() {
+        const gameOverPopup = document.createElement('div');
+        gameOverPopup.style.position = 'fixed';
+        gameOverPopup.style.top = '50%';
+        gameOverPopup.style.left = '50%';
+        gameOverPopup.style.transform = 'translate(-50%, -50%)';
+        gameOverPopup.style.backgroundColor = '#fff';
+        gameOverPopup.style.border = '1px solid #ccc';
+        gameOverPopup.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+        gameOverPopup.style.padding = '50px 75px'; // Increased padding for better spacing
+        gameOverPopup.style.borderRadius = '8px';
+        gameOverPopup.style.zIndex = '1001';
+        gameOverPopup.innerHTML = `
+            <h2>Game Over!</h2>
+            <p>Your score: ${score}</p>
+        `;
+        document.body.appendChild(gameOverPopup);
+
+        setTimeout(() => {
+            gameOverPopup.remove();
+        }, 1000); // Display popup for 1 second
+    }
+
+        function handleJumpAction(event) {
+            if (isGameRunning) {
+                jump();
+                event.preventDefault(); // Prevent page scrolling or default touch actions
+            }
+        }
+
+        function addEventListeners() {
+            document.addEventListener('keydown', handleKeyDown);
+            document.addEventListener('mousedown', handleJumpAction);
+            document.addEventListener('touchstart', handleJumpAction);
+        }
+
+        function removeEventListeners() {
+            document.removeEventListener('keydown', handleKeyDown);
+            document.removeEventListener('mousedown', handleJumpAction);
+            document.removeEventListener('touchstart', handleJumpAction);
+        }
+
+        function handleKeyDown(event) {
+            if (event.code === 'Space') {
+                handleJumpAction(event);
+            }
+        }
+
+        startButton.addEventListener('click', startGame);
+
+        dashboardButton.addEventListener('click', () => {
+            overlay.style.display = 'block';
+            dashboardPopup.style.display = 'block';
+        });
+
+        closePopupButton.addEventListener('click', () => {
+            overlay.style.display = 'none';
+            dashboardPopup.style.display = 'none';
+        });
+
+        overlay.addEventListener('click', () => {
+            overlay.style.display = 'none';
+            dashboardPopup.style.display = 'none';
+        });
+    
+        function showComingSoonPopup() {
+            const popup = document.createElement('div');
+            popup.style.position = 'fixed';
+            popup.style.top = '50%';
+            popup.style.left = '50%';
+            popup.style.transform = 'translate(-50%, -50%)';
+            popup.style.backgroundColor = '#fff';
+            popup.style.border = '1px solid #ccc';
+            popup.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+            popup.style.padding = '20px';
+            popup.style.borderRadius = '8px';
+            popup.style.zIndex = '1002';
+            popup.innerHTML = '<center><b>Thanks for the Interest! <br><br> Stay Tuned! <br><br> We are Coming Soon!</b></center>';
+            document.body.appendChild(popup);
+
+            setTimeout(() => {
+                popup.remove();
+            }, 2000);
+        }
+
+        document.getElementById('nav-play').addEventListener('click', (e) => {
+            e.preventDefault();
+            window.location.href = 'index.html';
+        });
+
+        document.getElementById('nav-race').addEventListener('click', (e) => {
+            e.preventDefault();
+            showComingSoonPopup();
+        });
+
+        document.getElementById('nav-earn').addEventListener('click', (e) => {
+            e.preventDefault();
+            showComingSoonPopup();
+        });
+
+        document.getElementById('nav-friends').addEventListener('click', (e) => {
+            e.preventDefault();
+            window.location.href = 'friends.html';
+        });
+
+        document.getElementById('nav-airdrop').addEventListener('click', (e) => {
+            e.preventDefault();
+            showComingSoonPopup();
+        });
+    </script>
+</body>
+</html>

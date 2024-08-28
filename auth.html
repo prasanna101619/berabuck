@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register/Login Modal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+
+        #modal {
+            display: block;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 400px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 50px;
+            box-sizing: border-box;
+            border-radius: 8px;
+            z-index: 1000;
+        }
+
+        #modal h2 {
+            margin: 0 0 20px;
+            font-size: 24px;
+            text-align: center;
+            color: #333;
+        }
+
+        #modal input, #modal textarea {
+            width: 93%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        #modal button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #modal button:hover {
+            background-color: #0056b3;
+        }
+
+        #modal a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        #modal a:hover {
+            text-decoration: underline;
+        }
+
+        #report-form {
+            display: none;
+            flex-direction: column;
+        }
+
+        #report-form textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        #modal .switch-view, #modal .report-problem {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #modal .go-back {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #modal .go-back a {
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <button id="open-modal">Open Modal</button>
+
+    <div id="modal">
+        <!-- Registration View -->
+        <div id="register-view">
+            <h2>Register</h2>
+            <center><span style="color:red;">&#9888;</span>
+                <i style="color:grey;">Give your original username <br> otherwise you may loose the airdrop</i></center><br><br>
+                        <input type="text" id="register-username" placeholder="Telegram username">
+            <input type="password" id="register-password" placeholder="Password">
+            <input type="password" id="register-repassword" placeholder="Re-enter Password">
+            <button id="register-button">Register</button>
+            <div class="switch-view">
+                Already have an account? <a href="#" id="switch-to-login">Login</a>
+            </div><br>
+            <div class="report-problem">
+                <span style="color:red;">&#9888;</span>
+                Can't Register/Login?<br><br>
+                <button id="report-problem-button">Report Problem</button>
+            </div>
+        </div>
+
+        <!-- Login View -->
+        <div id="login-view" style="display: none;">
+            <h2>Login</h2>
+            <input type="text" id="login-username" placeholder="Telegram username">
+            <input type="password" id="login-password" placeholder="Password">
+            <button id="login-button">Login</button>
+            <div class="switch-view">
+                Not registered yet? <a href="#" id="switch-to-register">Register</a>
+            </div><br>
+            <div class="report-problem">
+                <span style="color:red;">&#9888;</span>
+                Can't Register/Login?<br><br>
+                <button id="report-problem-button-login">Report Problem</button>
+            </div>
+        </div>
+
+        <!-- Report Problem View -->
+        <div id="report-form" style="display: none;">
+            <h2>Report Problem</h2>
+            <input type="text" id="report-username" placeholder="Telegram username">
+            <textarea id="report-message" placeholder="Message"></textarea>
+            <button id="submit-report">Submit</button>
+            <div class="go-back">
+                <a href="#" id="go-back">Go Back</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById('modal');
+        const registerView = document.getElementById('register-view');
+        const loginView = document.getElementById('login-view');
+        const reportForm = document.getElementById('report-form');
+        const switchToLogin = document.getElementById('switch-to-login');
+        const switchToRegister = document.getElementById('switch-to-register');
+        const reportProblemButton = document.getElementById('report-problem-button');
+        const reportProblemButtonLogin = document.getElementById('report-problem-button-login');
+        const submitReportButton = document.getElementById('submit-report');
+        const goBackLink = document.getElementById('go-back');
+
+        function showView(viewToShow) {
+            [registerView, loginView, reportForm].forEach(view => {
+                view.style.display = view === viewToShow ? 'block' : 'none';
+            });
+        }
+
+        // Show the modal by default
+        modal.style.display = 'block';
+
+        switchToLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            showView(loginView);
+        });
+
+        switchToRegister.addEventListener('click', (e) => {
+            e.preventDefault();
+            showView(registerView);
+        });
+
+        reportProblemButton.addEventListener('click', () => {
+            showView(reportForm);
+        });
+
+        reportProblemButtonLogin.addEventListener('click', () => {
+            showView(reportForm);
+        });
+
+        goBackLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            showView(registerView);
+        });
+
+        submitReportButton.addEventListener('click', () => {
+            alert('Report submitted');
+            showView(registerView);
+        });
+    </script>
+</body>
+</html>
