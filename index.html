@@ -3,34 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dino Runner</title>
+    <title>Bera Bucks</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background: rgb(238,172,93);
-            background: radial-gradient(circle, rgba(238,172,93,1) 0%, rgba(252,115,13,1) 100%);
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
-        }
+        font-family: 'Comic Sans MS', 'Courier New', Courier, monospace, Tahoma, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background:  radial-gradient(circle, #b2d8f7, #6eb5ff); /* Light blue background */
+        margin: 0;
+        padding: 20px;
+        box-sizing: border-box;
+    }
 
-        #game-container {
-            width: 100%;
-            max-width: 600px;
-            height: 150px;
-            border-bottom: 1px solid #ddd;
-            position: relative;
-            overflow: hidden;
-            background-color: #fafcfb;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
+    #game-container {
+        width: 100%;
+        max-width: 600px;
+        height: 150px;
+        border-bottom: 1px solid #ddd;
+        position: relative;
+        overflow: hidden;
+        background-color: #fafcfb;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
 
-        #dino {
+        #bera {
             width: 40px;
             height: 43px;
             position: absolute;
@@ -62,24 +61,24 @@
             color: #333;
         }
 
-        #start-button, #dashboard-button {
+        #start-button, #leaderboard-button {
             margin-top: 20px;
             padding: 12px 24px;
             font-size: 16px;
             cursor: pointer;
             border: none;
             border-radius: 4px;
-            background: rgb(238,172,93);
-            background: radial-gradient(circle, rgba(238,172,93,1) 0%, rgba(252,115,13,1) 100%);
+            background:  #6eb5ff;
             color: #fff;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         }
 
-        #start-button:hover, #dashboard-button:hover {
-            background-color: rgb(238,172,93);
+        #start-button:hover, #leaderboard-button:hover {
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.35);
         }
 
-        #dashboard-popup {
+        #leaderboard-popup {
             display: none;
             position: fixed;
             top: 50%;
@@ -97,26 +96,26 @@
             overflow-y: auto;
         }
 
-        #dashboard-popup h2 {
+        #leaderboard-popup h2 {
             margin: 0;
             font-size: 24px;
             text-align: center;
             color: #333;
         }
 
-        #dashboard-popup p {
+        #leaderboard-popup p {
             font-size: 18px;
             text-align: center;
             color: #666;
         }
 
-        #dashboard-popup table {
+        #leaderboard-popup table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
 
-        #dashboard-popup th, #dashboard-popup td {
+        #leaderboard-popup th, #leaderboard-popup td {
             padding: 12px;
             text-align: left;
             border-bottom: 1px solid #ddd;
@@ -124,16 +123,16 @@
             color: #333;
         }
 
-        #dashboard-popup th {
+        #leaderboard-popup th {
             background-color: #f8f9fa;
-            color: rgba(238,172,93,1) ;
+            color: #6eb5ff ;
         }
 
-        #dashboard-popup td {
+        #leaderboard-popup td {
             background-color: #fff;
         }
 
-        #dashboard-popup tr:hover {
+        #leaderboard-popup tr:hover {
             background-color: #f1f1f1;
         }
 
@@ -143,14 +142,14 @@
             right: 10px;
             cursor: pointer;
             font-size: 24px;
-            color: rgba(238,172,93,1) ;
+            color: #6eb5ff ;
             background-color: transparent;
             border: none;
             transition: color 0.3s;
         }
 
         #close-popup:hover {
-            color: rgba(238,172,93,1) ;
+            color: #6eb5ff ;
         }
 
         #overlay {
@@ -169,7 +168,7 @@
             justify-content: space-around;
             align-items: center;
             background: rgb(238,172,93);
-            background: radial-gradient(circle, rgba(238,172,93,1) 0%, rgba(252,115,13,1) 100%);
+            background: linear-gradient(to bottom right, #b2d8f7, #6eb5ff);
             padding: 15px 0; /* Increased padding for larger height */
             position: fixed;
             bottom: 0;
@@ -214,7 +213,7 @@
 <body>
     <h1>Player : John Doe</h1>
     <div id="game-container">
-        <img id="dino" src="bera.png" alt="Dino">
+        <img id="bera" src="bera.png" alt="Bera">
         <img id="cactus" src="cactus.png" alt="Cactus">
         <img id="coin" src="airdrop.png" alt="Coin">
     </div>
@@ -222,13 +221,13 @@
     <div id="total-score">Total: 0</div>
     <div id="high-score">High Score: 0</div>
     <button id="start-button">Start Game</button>
-    <button id="dashboard-button">Leader Board</button>
+    <button id="leaderboard-button">Leader Board</button>
 
-    <!-- Dashboard Popup -->
+    <!-- leaderboard Popup -->
     <div id="overlay"></div>
-    <div id="dashboard-popup">
+    <div id="leaderboard-popup">
         <button id="close-popup">&times;</button>
-        <h2>Dashboard</h2>
+        <h2>Leaderboard</h2>
         <p>Player: John Doe &emsp; Rank : 1</p>
         <table>
             <thead>
@@ -280,15 +279,15 @@
     </div>
 
     <script>
-        const dino = document.getElementById('dino');
+        const bera = document.getElementById('bera');
         const cactus = document.getElementById('cactus');
         const coin = document.getElementById('coin');
         const scoreDisplay = document.getElementById('score');
         const highScoreDisplay = document.getElementById('high-score');
         const totalScoreDisplay = document.getElementById('total-score');
         const startButton = document.getElementById('start-button');
-        const dashboardButton = document.getElementById('dashboard-button');
-        const dashboardPopup = document.getElementById('dashboard-popup');
+        const leaderboardButton = document.getElementById('leaderboard-button');
+        const leaderboardPopup = document.getElementById('leaderboard-popup');
         const overlay = document.getElementById('overlay');
         const closePopupButton = document.getElementById('close-popup');
 
@@ -315,17 +314,17 @@
                 const jumpInterval = setInterval(() => {
                     if (jumpHeight < maxJumpHeight && !isDescending) {
                         jumpHeight += jumpSpeed;
-                        dino.style.bottom = `${jumpHeight}px`;
+                        bera.style.bottom = `${jumpHeight}px`;
                     } else {
                         isDescending = true;
                         jumpHeight -= jumpSpeed;
-                        dino.style.bottom = `${jumpHeight}px`;
+                        bera.style.bottom = `${jumpHeight}px`;
 
                         if (jumpHeight <= 0) {
                             clearInterval(jumpInterval);
                             isJumping = false;
                             isDescending = false;
-                            dino.style.bottom = '0px';
+                            bera.style.bottom = '0px';
                         }
                     }
                 }, 13);
@@ -354,24 +353,24 @@
         }
 
         function checkCollision() {
-            const dinoRect = dino.getBoundingClientRect();
+            const beraRect = bera.getBoundingClientRect();
             const cactusRect = cactus.getBoundingClientRect();
             const coinRect = coin.getBoundingClientRect();
 
             if (
-                dinoRect.right > cactusRect.left &&
-                dinoRect.left < cactusRect.right &&
-                dinoRect.bottom > cactusRect.top &&
-                dinoRect.top < cactusRect.bottom
+                beraRect.right > cactusRect.left &&
+                beraRect.left < cactusRect.right &&
+                beraRect.bottom > cactusRect.top &&
+                beraRect.top < cactusRect.bottom
             ) {
                 endGame();
             }
 
             if (
-                dinoRect.right > coinRect.left &&
-                dinoRect.left < coinRect.right &&
-                dinoRect.bottom > coinRect.top &&
-                dinoRect.top < coinRect.bottom
+                beraRect.right > coinRect.left &&
+                beraRect.left < coinRect.right &&
+                beraRect.bottom > coinRect.top &&
+                beraRect.top < coinRect.bottom
             ) {
                 collectCoin();
             }
@@ -408,7 +407,7 @@
                     checkCollision();
                 }, gameSpeed);
                 addEventListeners();
-                switchDinoImage(true);
+                switchBeraImage(true);
             }
         }
 
@@ -418,7 +417,7 @@
             showGameOverPopup();
             startButton.style.display = 'block';
             removeEventListeners();
-            switchDinoImage(false);
+            switchBeraImage(false);
         }
 
         function showGameOverPopup() {
@@ -444,8 +443,8 @@
             }, 1000);
         }
 
-        function switchDinoImage(isRunning) {
-            dino.src = isRunning ? "bera.gif" : "bera.png";
+        function switchBeraImage(isRunning) {
+            bera.src = isRunning ? "bera.gif" : "bera.png";
         }
 
         function handleJumpAction(event) {
@@ -475,19 +474,19 @@
 
         startButton.addEventListener('click', startGame);
 
-        dashboardButton.addEventListener('click', () => {
+        leaderboardButton.addEventListener('click', () => {
             overlay.style.display = 'block';
-            dashboardPopup.style.display = 'block';
+            leaderboardPopup.style.display = 'block';
         });
 
         closePopupButton.addEventListener('click', () => {
             overlay.style.display = 'none';
-            dashboardPopup.style.display = 'none';
+            leaderboardPopup.style.display = 'none';
         });
 
         overlay.addEventListener('click', () => {
             overlay.style.display = 'none';
-            dashboardPopup.style.display = 'none';
+            leaderboardPopup.style.display = 'none';
         });
 
         function showComingSoonPopup() {
