@@ -7,27 +7,27 @@
     <link rel="stylesheet" href="styles.css">
     <style>
         body {
-        font-family: 'Comic Sans MS', 'Courier New', Courier, monospace, Tahoma, sans-serif;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        background:  radial-gradient(circle, #b2d8f7, #6eb5ff); /* Light blue background */
-        margin: 0;
-        padding: 20px;
-        box-sizing: border-box;
-    }
+            font-family: 'Comic Sans MS', 'Courier New', Courier, monospace, Tahoma, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: radial-gradient(circle, #b2d8f7, #6eb5ff);
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
 
-    #game-container {
-        width: 100%;
-        max-width: 600px;
-        height: 150px;
-        border-bottom: 1px solid #ddd;
-        position: relative;
-        overflow: hidden;
-        background-color: #fafcfb;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
+        #game-container {
+            width: 100%;
+            max-width: 600px;
+            height: 150px;
+            border-bottom: 1px solid #ddd;
+            position: relative;
+            overflow: hidden;
+            background-color: #fafcfb;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
 
         #bera {
             width: 40px;
@@ -45,15 +45,6 @@
             right: -30px;
         }
 
-        #coin {
-            width: 20px;
-            height: 20px;
-            position: absolute;
-            bottom: 0; /* Positioned above the cactus */
-            right: 50px;
-            display: none;
-        }
-
         #score, #high-score, #total-score {
             font-size: 18px;
             margin-top: 10px;
@@ -68,7 +59,7 @@
             cursor: pointer;
             border: none;
             border-radius: 4px;
-            background:  #6eb5ff;
+            background: #6eb5ff;
             color: #fff;
             transition: background-color 0.3s, box-shadow 0.3s;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
@@ -125,7 +116,7 @@
 
         #leaderboard-popup th {
             background-color: #f8f9fa;
-            color: #6eb5ff ;
+            color: #6eb5ff;
         }
 
         #leaderboard-popup td {
@@ -142,14 +133,14 @@
             right: 10px;
             cursor: pointer;
             font-size: 24px;
-            color: #6eb5ff ;
+            color: #6eb5ff;
             background-color: transparent;
             border: none;
             transition: color 0.3s;
         }
 
         #close-popup:hover {
-            color: #6eb5ff ;
+            color: #6eb5ff;
         }
 
         #overlay {
@@ -167,9 +158,8 @@
             display: flex;
             justify-content: space-around;
             align-items: center;
-            background: rgb(238,172,93);
             background: linear-gradient(to bottom right, #b2d8f7, #6eb5ff);
-            padding: 15px 0; /* Increased padding for larger height */
+            padding: 15px 0;
             position: fixed;
             bottom: 0;
             width: 100%;
@@ -181,15 +171,15 @@
             text-align: center;
             color: #fff;
             text-decoration: none;
-            font-size: 14px; /* Increased font size */
+            font-size: 14px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
         .nav-icon {
-            width: 40px; /* Increased icon size */
-            height: 40px; /* Increased icon size */
+            width: 40px;
+            height: 40px;
             margin-bottom: 5px;
         }
 
@@ -207,7 +197,6 @@
                 font-size: 12px;
             }
         }
-
     </style>
 </head>
 <body>
@@ -215,15 +204,14 @@
     <div id="game-container">
         <img id="bera" src="bera.png" alt="Bera">
         <img id="cactus" src="cactus.png" alt="Cactus">
-        <img id="coin" src="airdrop.png" alt="Coin">
     </div>
-    <div id="score">0</div>
+    <div id="score"><img src="airdrop.png" style="height: 25px; width: 25px;"> 0</div>
     <div id="total-score">Total: 0</div>
     <div id="high-score">High Score: 0</div>
     <button id="start-button">Start Game</button>
     <button id="leaderboard-button">Leader Board</button>
 
-    <!-- leaderboard Popup -->
+    <!-- Leaderboard Popup -->
     <div id="overlay"></div>
     <div id="leaderboard-popup">
         <button id="close-popup">&times;</button>
@@ -240,7 +228,7 @@
             <tbody>
                 <script>
                     const names = ["John", "Paul", "George", "Ringo", "Mick"];
-                    const scores = ["10M", "9.9M", "9.8M", "9.M", "9.6M"];
+                    const scores = ["10M", "9.9M", "9.8M", "9.7M", "9.6M"];
 
                     for (let i = 0; i < 100; i++) {
                         const name = names[i % names.length];
@@ -281,7 +269,6 @@
     <script>
         const bera = document.getElementById('bera');
         const cactus = document.getElementById('cactus');
-        const coin = document.getElementById('coin');
         const scoreDisplay = document.getElementById('score');
         const highScoreDisplay = document.getElementById('high-score');
         const totalScoreDisplay = document.getElementById('total-score');
@@ -297,12 +284,10 @@
         let highScore = 0;
         let totalScore = 0;
         let cactusPosition = 600;
-        let coinPosition = 600;
         let isGameRunning = false;
         let gameSpeed = 20;
         let gameLoop;
-        let cactusInterval;
-        let coinInterval;
+        let lastCactusJumped = false;
 
         function jump() {
             if (!isJumping && isGameRunning) {
@@ -335,27 +320,14 @@
             cactusPosition -= 5;
             if (cactusPosition < -30) {
                 cactusPosition = 600;
+                lastCactusJumped = false;
             }
             cactus.style.left = `${cactusPosition}px`;
-        }
-
-        function moveCoin() {
-            coinPosition -= 5;
-            if (coinPosition < -20) {
-                coinPosition = 600;
-                coin.style.display = 'none'; // Hide coin if it moves off-screen
-                setTimeout(() => {
-                    coin.style.display = 'block'; // Show coin at a new position
-                    coinPosition = 600;
-                }, 2000);
-            }
-            coin.style.left = `${coinPosition}px`;
         }
 
         function checkCollision() {
             const beraRect = bera.getBoundingClientRect();
             const cactusRect = cactus.getBoundingClientRect();
-            const coinRect = coin.getBoundingClientRect();
 
             if (
                 beraRect.right > cactusRect.left &&
@@ -364,19 +336,13 @@
                 beraRect.top < cactusRect.bottom
             ) {
                 endGame();
-            }
-
-            if (
-                beraRect.right > coinRect.left &&
-                beraRect.left < coinRect.right &&
-                beraRect.bottom > coinRect.top &&
-                beraRect.top < coinRect.bottom
-            ) {
-                collectCoin();
+            } else if (beraRect.left > cactusRect.right && !lastCactusJumped) {
+                increaseScore();
+                lastCactusJumped = true;
             }
         }
 
-        function collectCoin() {
+        function increaseScore() {
             score++;
             totalScore++;
             scoreDisplay.textContent = score;
@@ -385,7 +351,6 @@
                 highScore = score;
                 highScoreDisplay.textContent = `High Score: ${highScore}`;
             }
-            coin.style.display = 'none'; // Hide coin once collected
         }
 
         function startGame() {
@@ -397,13 +362,10 @@
                 totalScoreDisplay.textContent = 'Total: 0';
                 startButton.style.display = 'none';
                 cactusPosition = 600;
-                coinPosition = 600;
                 cactus.style.left = `${cactusPosition}px`;
-                coin.style.left = `${coinPosition}px`;
-                coin.style.display = 'block'; // Ensure coin is visible when game starts
+                lastCactusJumped = false;
                 gameLoop = setInterval(() => {
                     moveCactus();
-                    moveCoin();
                     checkCollision();
                 }, gameSpeed);
                 addEventListeners();
